@@ -8,6 +8,11 @@ framework:
     #esi: true
     #fragments: true
 
+    assets:
+        packages:
+            bootstrap:
+                base_path: '/startbootstrap-shop-homepage-gh-pages'
+
 when@test:
     framework:
         test: true

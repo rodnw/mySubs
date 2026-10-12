@@ -1,0 +1,7 @@
+bootstrap_menu:
+    menus:
+        main:
+            items:
+                collections:
+                    label: 'Les Collections'
+                    route: 'app_inventory_list'

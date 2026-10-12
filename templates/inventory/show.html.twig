@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la Collection{% endblock %}
+
+{% block body %}
+    <h1>Collection : {{ inventory.description }}</h1>
+
+    <h2>Vinyles dans cette collection :</h2>
+    <ul>
+        {% for album in inventory.albums %}
+            <li>
+                <a href="{{ path('app_album_show', {'id': album.id}) }}">
+                    <strong>{{ album.title }}</strong>
+                </a> 
+                par {{ album.artist }} 
+                {% if album.year %} ({{ album.year }}) {% endif %}
+            </li>
+        {% else %}
+            <li>Aucun vinyle pour le moment.</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ path('app_inventory_list') }}">Retour à la liste des collections</a></p>
+{% endblock %}

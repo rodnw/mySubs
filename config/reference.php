@@ -1470,6 +1470,29 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     generate_final_classes?: bool|Param, // Default: true
  *     generate_final_entities?: bool|Param, // Default: false
  * }
+ * @psalm-type BootstrapMenuConfig = array{
+ *     version?: int|Param, // Default: 5
+ *     dropdown_active_style?: bool|Param, // Default: false
+ *     dropdown_item_active_style?: bool|Param, // Default: false
+ *     menus?: array<string, array{ // Default: []
+ *         items?: list<array{ // Default: []
+ *             label?: scalar|Param|null,
+ *             is_divider?: bool|Param, // Default: false
+ *             route?: scalar|Param|null,
+ *             route_parameters?: list<mixed>,
+ *             url?: scalar|Param|null,
+ *             roles?: list<scalar|Param|null>,
+ *             items?: list<array{ // Default: []
+ *                 label?: scalar|Param|null,
+ *                 is_divider?: bool|Param, // Default: false
+ *                 route?: scalar|Param|null,
+ *                 route_parameters?: list<mixed>,
+ *                 url?: scalar|Param|null,
+ *                 roles?: list<scalar|Param|null>,
+ *             }>,
+ *         }>,
+ *     }>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1482,6 +1505,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_extra?: TwigExtraConfig,
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
+ *     bootstrap_menu?: BootstrapMenuConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1497,6 +1521,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
+ *         bootstrap_menu?: BootstrapMenuConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1510,6 +1535,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         bootstrap_menu?: BootstrapMenuConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1524,6 +1550,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         bootstrap_menu?: BootstrapMenuConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

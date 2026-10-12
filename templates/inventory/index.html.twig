@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Collections{% endblock %}
+
+{% block main %}
+    <h1>Liste des Collections de la communauté</h1>
+
+    <table class="table table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventory in inventories %}
+                <tr>
+                    <td>{{ inventory.id }}</td>
+                    <td>{{ inventory.description }}</td>
+                    <td>
+                        <a href="{{ path('app_inventory_show', {'id': inventory.id}) }}" class="btn btn-sm btn-primary">
+                            Voir les vinyles
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
