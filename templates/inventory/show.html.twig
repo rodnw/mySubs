@@ -5,18 +5,18 @@
 {% block body %}
     <h1>Collection : {{ inventory.description }}</h1>
 
-    <h2>Vinyles dans cette collection :</h2>
+    <h2>Caissons de basse dans cette collection :</h2>
     <ul>
-        {% for album in inventory.albums %}
+        {% for subwoofer in inventory.subwoofers %}
             <li>
-                <a href="{{ path('app_album_show', {'id': album.id}) }}">
-                    <strong>{{ album.title }}</strong>
+                <a href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}">
+                    <strong>{{ subwoofer.model }}</strong>
                 </a> 
-                par {{ album.artist }} 
-                {% if album.year %} ({{ album.year }}) {% endif %}
+                de {{ subwoofer.brand }} 
+                {% if subwoofer.year %} ({{ subwoofer.year }}) {% endif %}
             </li>
         {% else %}
-            <li>Aucun vinyle pour le moment.</li>
+            <li>Aucun caisson de basse pour le moment.</li>
         {% endfor %}
     </ul>
 

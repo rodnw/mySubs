@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AlbumRepository;
+use App\Repository\SubwooferRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AlbumRepository::class)]
-class Album
+#[ORM\Entity(repositoryClass: SubwooferRepository::class)]
+class Subwoofer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,18 +14,15 @@ class Album
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $model = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $artist = null;
+    private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
     private ?string $year = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $label = null;
-
-    #[ORM\ManyToOne(inversedBy: 'albums')]
+    #[ORM\ManyToOne(inversedBy: 'subwoofers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Inventory $inventory = null;
 
@@ -34,26 +31,26 @@ class Album
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getModel(): ?string
     {
-        return $this->title;
+        return $this->model;
     }
 
-    public function setTitle(string $title): static
+    public function setModel(string $model): static
     {
-        $this->title = $title;
+        $this->model = $model;
 
         return $this;
     }
 
-    public function getArtist(): ?string
+    public function getBrand(): ?string
     {
-        return $this->artist;
+        return $this->brand;
     }
 
-    public function setArtist(string $artist): static
+    public function setBrand(string $brand): static
     {
-        $this->artist = $artist;
+        $this->brand = $brand;
 
         return $this;
     }
@@ -66,18 +63,6 @@ class Album
     public function setYear(string $year): static
     {
         $this->year = $year;
-
-        return $this;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
 
         return $this;
     }

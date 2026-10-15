@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Album;
+use App\Entity\Subwoofer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Album>
+ * @extends ServiceEntityRepository<Subwoofer>
  */
-class AlbumRepository extends ServiceEntityRepository
+class SubwooferRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Album::class);
+        parent::__construct($registry, Subwoofer::class);
     }
 
 //    /**
-//     * @return Album[] Returns an array of Album objects
+//     * @return Subwoofer[] Returns an array of Subwoofer objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -31,7 +31,7 @@ class AlbumRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Album
+//    public function findOneBySomeField($value): ?Subwoofer
 //    {
 //        return $this->createQueryBuilder('a')
 //            ->andWhere('a.exampleField = :val')

@@ -19,14 +19,14 @@ class Inventory
     private ?string $description = null;
 
     /**
-     * @var Collection<int, Album>
+     * @var Collection<int, Subwoofer>
      */
-    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'inventory')]
-    private Collection $albums;
+    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory')]
+    private Collection $subwoofers;
 
     public function __construct()
     {
-        $this->albums = new ArrayCollection();
+        $this->subwoofers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,29 +47,29 @@ class Inventory
     }
 
     /**
-     * @return Collection<int, Album>
+     * @return Collection<int, Subwoofer>
      */
-    public function getAlbums(): Collection
+    public function getSubwoofers(): Collection
     {
-        return $this->albums;
+        return $this->subwoofers;
     }
 
-    public function addAlbum(Album $album): static
+    public function addSubwoofer(Subwoofer $subwoofer): static
     {
-        if (!$this->albums->contains($album)) {
-            $this->albums->add($album);
-            $album->setInventory($this);
+        if (!$this->subwoofers->contains($subwoofer)) {
+            $this->subwoofers->add($subwoofer);
+            $subwoofer->setInventory($this);
         }
 
         return $this;
     }
 
-    public function removeAlbum(Album $album): static
+    public function removeSubwoofer(Subwoofer $subwoofer): static
     {
-        if ($this->albums->removeElement($album)) {
+        if ($this->subwoofers->removeElement($subwoofer)) {
             // set the owning side to null (unless already changed)
-            if ($album->getInventory() === $this) {
-                $album->setInventory(null);
+            if ($subwoofer->getInventory() === $this) {
+                $subwoofer->setInventory(null);
             }
         }
 
