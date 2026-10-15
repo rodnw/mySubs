@@ -2,7 +2,7 @@
 
 {% block title %}Détail de la Collection{% endblock %}
 
-{% block body %}
+{% block main %}
     <h1>Collection : {{ inventory.description }}</h1>
 
     <h2>Caissons de basse dans cette collection :</h2>
@@ -14,11 +14,14 @@
                 </a> 
                 de {{ subwoofer.brand }} 
                 {% if subwoofer.year %} ({{ subwoofer.year }}) {% endif %}
+                <a href="{{ path('app_subwoofer_edit', {'id': subwoofer.id}) }}" class="btn btn-sm btn-outline-primary ms-2">Modifier</a>
             </li>
         {% else %}
             <li>Aucun caisson de basse pour le moment.</li>
         {% endfor %}
     </ul>
+
+    <p><a href="{{ path('app_subwoofer_new') }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
 
     <p><a href="{{ path('app_inventory_list') }}">Retour à la liste des collections</a></p>
 {% endblock %}

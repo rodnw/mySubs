@@ -31,7 +31,13 @@
         </div>
     </div>
 
-    <a href="{{ path('app_inventory_show', { 'id': subwoofer.inventory.id }) }}" class="btn btn-secondary">
-        Retour à la collection
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_inventory_show', { 'id': subwoofer.inventory.id }) }}" class="btn btn-secondary">
+            Retour à la collection
+        </a>
+        <a href="{{ path('app_subwoofer_edit', { 'id': subwoofer.id }) }}" class="btn btn-primary">
+            Modifier
+        </a>
+        {{ include('subwoofer/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

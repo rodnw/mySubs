@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ subwoofer.model }}{% endblock %}
+
+{% block main %}
+    <h1>Modifier le caisson de basse</h1>
+
+    {{ include('subwoofer/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <div class="d-flex gap-2 mt-3">
+        <a href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}" class="btn btn-secondary">Retour au caisson</a>
+        {{ include('subwoofer/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
