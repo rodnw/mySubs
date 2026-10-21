@@ -31,6 +31,11 @@ class Inventory
         $this->subwoofers = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->description;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
