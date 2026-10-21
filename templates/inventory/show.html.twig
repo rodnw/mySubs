@@ -21,7 +21,7 @@
         {% endfor %}
     </ul>
 
-    <p><a href="{{ path('app_subwoofer_new') }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
+    <p><a href="{{ path('app_subwoofer_newininventory', {'id': inventory.id}) }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
 
     <div class="d-flex gap-2">
         <a href="{{ path('app_inventory_list') }}" class="btn btn-secondary">Retour à la liste des collections</a>

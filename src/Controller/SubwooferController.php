@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Inventory;
 use App\Entity\Subwoofer;
 use App\Form\SubwooferType;
 use App\Repository\SubwooferRepository;
@@ -29,6 +30,37 @@ class SubwooferController extends AbstractController
         }
 
         return $this->render('subwoofer/new.html.twig', [
+            'subwoofer' => $subwoofer,
+            'form' => $form,
+        ]);
+    }
+
+    // Create dans le contexte d'une collection : la collection est connue grâce à l'id de la route
+    #[Route('/subwoofer/newininventory/{id}', name: 'app_subwoofer_newininventory', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function newInInventory(Request $request, EntityManagerInterface $entityManager, Inventory $inventory): Response
+    {
+        $subwoofer = new Subwoofer();
+        // already set an inventory, so as to not need add that field in the form
+        $subwoofer->setInventory($inventory);
+
+        $form = $this->createForm(SubwooferType::class, $subwoofer,
+            [
+                'display_inventory' => false,
+            ]
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($subwoofer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_inventory_show',
+                ['id' => $inventory->getId()],
+                Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('subwoofer/newininventory.html.twig', [
+            'inventory' => $inventory,
             'subwoofer' => $subwoofer,
             'form' => $form,
         ]);
