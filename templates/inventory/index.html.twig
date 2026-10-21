@@ -27,4 +27,65 @@
             {% endfor %}
         </tbody>
     </table>
-{% endblock %}
+
+    <p><button id="subwoofersbtn">Cliquer ici pour charger la liste des caissons de basse</button></p>
+
+    <!-- réceptacle pour la liste des caissons de basse chargée dynamiquement -->
+    <div class="divsubwoofers"></div>
+
+{% endblock %} {# main #}
+
+{% block custompage_script %}
+    <script>
+        // enregistrer un gestionnaire de clics sur le bouton d'id 'subwoofersbtn'
+        document.getElementById("subwoofersbtn").onclick = function() {
+            //console.log('clic !');
+
+            const xhr = new XMLHttpRequest();
+
+            // récupération AJAX de la liste des caissons de basse au format JSON
+            xhr.open("GET", "/api/subwoofers", true);
+
+            // Chargement de la liste des caissons de basse en AJAX
+            xhr.onload = function() {
+                // si le serveur répond OK
+                if (xhr.status === 200) {
+
+                    // console.log(xhr.responseText);
+
+                    // Gestion des résultats de la liste récupérés
+
+                    // construction d'une liste
+                    const ul = document.createElement("ul");
+
+                    // récupération des données depuis le JSON
+                    const data = JSON.parse(xhr.responseText);
+                    //console.log(data);
+
+                    // Pour chaque élément "membre" (Subwoofer), on ajoute un <li>
+                    data.member.forEach( subwoofer => {
+                        //console.log(`${subwoofer.id} - ${subwoofer.model}`);
+
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(`${subwoofer.id} - ${subwoofer.model}`);
+                        li.appendChild(text);
+                        ul.appendChild(li);
+                    });
+
+                    // insertion d'une liste dans la cible prévue dans le gabarit
+                    const targetplace = document.getElementsByClassName("divsubwoofers")[0];
+                    targetplace.appendChild(ul);
+
+                } else {
+                    console.error('Error fetching data');
+                }
+            }
+            // gestion des erreurs sur les requêtes asynchrones
+            xhr.onerror = function() {
+                console.error('Request failed');
+            };
+
+            xhr.send();
+        };
+    </script>
+{% endblock %} {# custompage_script #}
