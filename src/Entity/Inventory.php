@@ -23,7 +23,7 @@ class Inventory
     /**
      * @var Collection<int, Subwoofer>
      */
-    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory')]
+    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory', cascade: ['persist'])]
     private Collection $subwoofers;
 
     public function __construct()

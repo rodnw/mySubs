@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,9 @@ class InventoryController extends AbstractController
             $entityManager->persist($inventory);
             $entityManager->flush();
 
+            // Make sure message will be displayed after redirect
+            $this->addFlash('message', 'bien ajouté');
+
             return $this->redirectToRoute('app_inventory_list', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -64,10 +68,31 @@ class InventoryController extends AbstractController
     #[Route('/inventory/{id}/edit', name: 'app_inventory_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Inventory $inventory, EntityManagerInterface $entityManager): Response
     {
+        $originalSubwoofers = new ArrayCollection();
+
+        // On crée un tableau ArrayCollection mémorisant les caissons de la collection avant la soumission
+        foreach ($inventory->getSubwoofers() as $subwoofer) {
+            $originalSubwoofers->add($subwoofer);
+        }
+
         $form = $this->createForm(InventoryType::class, $inventory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // une fois que le formulaire est valide, les nouvelles données sont dans $inventory
+            // on parcourt l'ancien tableau et on vérifie l'impact des suppressions
+            foreach ($originalSubwoofers as $subwoofer) {
+
+                if (false === $inventory->getSubwoofers()->contains($subwoofer)) {
+                    // le Subwoofer n'est plus présent dans le tableau : on le supprime
+                    $inventory->getSubwoofers()->removeElement($subwoofer);
+                    $entityManager->persist($subwoofer);
+                    $entityManager->remove($subwoofer);
+                }
+
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_inventory_list', [], Response::HTTP_SEE_OTHER);

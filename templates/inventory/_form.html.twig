@@ -1,4 +1,29 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.description) }}
+        </div>
+        <div class="col">
+
+            <h3>Caissons de basse</h3>
+            {# the data-index attribute is required for the JavaScript code below #}
+            <ul class="subwoofers"
+                data-index="{{ form.subwoofers|length > 0 ? form.subwoofers|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_widget(form.subwoofers.vars.prototype)|e('html_attr') }}">
+                {# form_row(form.subwoofers) #}
+                {# passer en revue chaque caisson existant pour afficher ses champs #}
+                {% for subwoofer in form.subwoofers %}
+                    <li>{{ form_row(subwoofer) }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="add_item_link" data-collection-holder-class="subwoofers">Ajouter un caisson de basse</button>
+
+        </div>
+    </div>
+
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+
 {{ form_end(form) }}
