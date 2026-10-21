@@ -21,7 +21,11 @@
         {% endfor %}
     </ul>
 
-    <p><a href="{{ path('app_subwoofer_new') }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
+    <p><a href="{{ path('app_subwoofer_newininventory', {'id': inventory.id}) }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
 
-    <p><a href="{{ path('app_inventory_list') }}">Retour à la liste des collections</a></p>
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_inventory_list') }}" class="btn btn-secondary">Retour à la liste des collections</a>
+        <a href="{{ path('app_inventory_edit', {'id': inventory.id}) }}" class="btn btn-primary">Modifier</a>
+        {{ include('inventory/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

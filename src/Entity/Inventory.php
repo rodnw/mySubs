@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\InventoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InventoryRepository::class)]
+#[ApiResource]
 class Inventory
 {
     #[ORM\Id]
@@ -21,12 +23,17 @@ class Inventory
     /**
      * @var Collection<int, Subwoofer>
      */
-    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory')]
+    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory', cascade: ['persist'])]
     private Collection $subwoofers;
 
     public function __construct()
     {
         $this->subwoofers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->description;
     }
 
     public function getId(): ?int

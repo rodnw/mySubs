@@ -1,0 +1,12 @@
+{# Removed: extends 'base.html.twig' #}
+{% extends 'inventory/inventory_form_base.html.twig' %}
+
+{% block title %}Nouvelle collection{% endblock %}
+
+{% block main %}
+    <h1>Créer une collection</h1>
+
+    {{ include('inventory/_form.html.twig') }}
+
+    <a href="{{ path('app_inventory_list') }}" class="btn btn-secondary mt-3">Retour aux collections</a>
+{% endblock %}
