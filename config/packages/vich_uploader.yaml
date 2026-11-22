@@ -1,0 +1,8 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        subwoofers:
+            uri_prefix: /images/subwoofers
+            upload_destination: '%kernel.project_dir%/public/images/subwoofers'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

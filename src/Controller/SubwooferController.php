@@ -8,6 +8,7 @@ use App\Form\SubwooferType;
 use App\Repository\SubwooferRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FileUploadError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,13 +23,38 @@ class SubwooferController extends AbstractController
         $form = $this->createForm(SubwooferType::class, $subwoofer);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        // explode the submitted check and the valid check
+        $valid=false;
+        $submitted=$form->isSubmitted();
+        dump($submitted);
+        if($submitted) {
+            $valid=$form->isValid();
+            dump($valid);
+        }
+
+        if ($submitted && $valid) {
             $entityManager->persist($subwoofer);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_inventory_show', ['id' => $subwoofer->getInventory()->getId()], Response::HTTP_SEE_OTHER);
         }
 
+        // now, we know invalid data was submitted
+        if(! $valid) {
+            // check all errors from all of the form's fields (in depth)
+            $errors = $form->getErrors(true);
+
+            foreach($errors as $error) {
+                dump($error);
+
+                // now, if we find a problem of file upload, propagate it to the whole form
+                if($error instanceof FileUploadError) {
+                    $form->addError($error);
+                }
+            }
+        }
+
+        // in that re-rendering, the main error message should be displayed
         return $this->render('subwoofer/new.html.twig', [
             'subwoofer' => $subwoofer,
             'form' => $form,
@@ -87,12 +113,37 @@ class SubwooferController extends AbstractController
         $form = $this->createForm(SubwooferType::class, $subwoofer);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        // explode the submitted check and the valid check
+        $valid=false;
+        $submitted=$form->isSubmitted();
+        dump($submitted);
+        if($submitted) {
+            $valid=$form->isValid();
+            dump($valid);
+        }
+
+        if ($submitted && $valid) {
             $entityManager->flush();
 
             return $this->redirectToRoute('app_subwoofer_show', ['id' => $subwoofer->getId()], Response::HTTP_SEE_OTHER);
         }
 
+        // now, we know invalid data was submitted
+        if(! $valid) {
+            // check all errors from all of the form's fields (in depth)
+            $errors = $form->getErrors(true);
+
+            foreach($errors as $error) {
+                dump($error);
+
+                // now, if we find a problem of file upload, propagate it to the whole form
+                if($error instanceof FileUploadError) {
+                    $form->addError($error);
+                }
+            }
+        }
+
+        // in that re-rendering, the main error message should be displayed
         return $this->render('subwoofer/edit.html.twig', [
             'subwoofer' => $subwoofer,
             'form' => $form,

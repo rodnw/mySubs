@@ -6,8 +6,10 @@ use App\Entity\Inventory;
 use App\Entity\Subwoofer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SubwooferType extends AbstractType
 {
@@ -18,6 +20,8 @@ class SubwooferType extends AbstractType
             ->add('model', null, ['label' => 'Modèle'])
             ->add('brand', null, ['label' => 'Marque'])
             ->add('year', null, ['label' => 'Année'])
+            ->add('imageName', TextType::class, ['disabled' => true, 'label' => "Nom de l'image"])
+            ->add('imageFile', VichImageType::class, ['required' => false, 'label' => 'Image'])
         ;
         // Le champ de la collection n'est affiché que si elle n'est pas déjà fixée
         if ($options['display_inventory']) {

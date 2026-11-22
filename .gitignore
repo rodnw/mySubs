@@ -18,3 +18,7 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> vich/uploader-bundle ###
+/public/images/subwoofers/
+###< vich/uploader-bundle ###
