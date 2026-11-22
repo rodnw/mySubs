@@ -12,6 +12,7 @@ use Symfony\Component\Form\FileUploadError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SubwooferController extends AbstractController
 {
@@ -149,6 +150,7 @@ class SubwooferController extends AbstractController
 
     // Update : même formulaire que la création, pré-rempli avec le caisson existant
     #[Route('/subwoofer/{id}/edit', name: 'app_subwoofer_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, Subwoofer $subwoofer, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SubwooferType::class, $subwoofer);
@@ -193,6 +195,7 @@ class SubwooferController extends AbstractController
 
     // Delete : uniquement en POST, protégé par un jeton CSRF
     #[Route('/subwoofer/{id}', name: 'app_subwoofer_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Subwoofer $subwoofer, EntityManagerInterface $entityManager): Response
     {
         $inventoryId = $subwoofer->getInventory()->getId();
