@@ -106,6 +106,47 @@ class SubwooferController extends AbstractController
         ]);
     }
 
+    /**
+     * Mark a subwoofer as current priority in the user's session
+     *
+     */
+    #[Route('/subwoofer/mark/{id}', name: 'app_subwoofer_mark', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function markAction(Request $request, Subwoofer $subwoofer): Response
+    {
+        dump($subwoofer);
+
+        // Récupération du tableau d'id urgents dans la session
+        $urgents = $request->getSession()->get('urgents');
+        dump($urgents);
+        if( ! is_array($urgents) ) {
+            $urgents = array();
+        }
+
+        // DONE: mémoriser dans la liste des urgents
+        $id = $subwoofer->getId();
+        // si l'identifiant n'est pas présent dans le tableau des urgents, l'ajouter
+        if (! in_array($id, $urgents) )
+        {
+            $urgents[] = $id;
+        }
+        else
+        // sinon, le retirer du tableau
+        {
+            // substract two arrays
+            $urgents = array_diff($urgents, array($id));
+        }
+
+        $this->addFlash('message', 'id' . $id . ' bien marké');
+
+        dump($urgents);
+
+        // Sauvegarde du tableau d'id urgents dans la session
+        $request->getSession()->set('urgents', $urgents);
+
+        return $this->redirectToRoute('app_subwoofer_show',
+                                      ['id' => $subwoofer->getId()]);
+    }
+
     // Update : même formulaire que la création, pré-rempli avec le caisson existant
     #[Route('/subwoofer/{id}/edit', name: 'app_subwoofer_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Subwoofer $subwoofer, EntityManagerInterface $entityManager): Response
