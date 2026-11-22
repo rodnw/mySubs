@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ showcase.title }}{% endblock %}
+
+{% block main %}
+    <h1>Modifier la vitrine</h1>
+
+    {{ include('showcase/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <div class="d-flex gap-2 mt-3">
+        <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" class="btn btn-secondary">Retour à la vitrine</a>
+        {{ include('showcase/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

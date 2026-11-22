@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block main %}
+    <h1>Mon compte</h1>
+    <p class="lead">Bonjour {{ member.name }} !</p>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>Ma collection</h2>
+            <p>{{ soundSystem.description }} : {{ soundSystem.subwoofers|length }} caisson(s) de basse.</p>
+            <ul>
+                {% for subwoofer in soundSystem.subwoofers %}
+                    <li>
+                        <a href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}">{{ subwoofer }}</a>
+                        {% if subwoofer.showcases is empty %}<span class="badge bg-light text-dark">dans aucune vitrine</span>{% endif %}
+                    </li>
+                {% else %}
+                    <li>Aucun caisson pour le moment.</li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex gap-2">
+                <a href="{{ path('app_sound_system_show', {'id': soundSystem.id}) }}" class="btn btn-primary">Gérer ma collection</a>
+                <a href="{{ path('app_subwoofer_newinsoundsystem', {'id': soundSystem.id}) }}" class="btn btn-outline-primary">Ajouter un caisson</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Mes vitrines</h2>
+            <ul>
+                {% for showcase in showcases %}
+                    <li>
+                        <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}">{{ showcase.title }}</a>
+                        ({{ showcase.subwoofers|length }} caisson(s))
+                        {% if showcase.published %}
+                            <span class="badge bg-success">publiée</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">privée</span>
+                        {% endif %}
+                    </li>
+                {% else %}
+                    <li>Aucune vitrine pour le moment.</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ path('app_showcase_new') }}" class="btn btn-primary">Créer une vitrine</a>
+
+            <h2 class="mt-4">Mes marque-pages</h2>
+            <ul>
+                {% for subwoofer in bookmarks %}
+                    <li>
+                        <a href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}">{{ subwoofer }}</a>
+                        de {{ subwoofer.soundSystem.member }}
+                        <a href="{{ path('app_subwoofer_mark', {'id': subwoofer.id}) }}" class="ms-1" title="Retirer"><i class="bi bi-bookmark-x"></i></a>
+                    </li>
+                {% else %}
+                    <li>Aucun marque-page. Ajoutez-en depuis les vitrines des autres membres.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

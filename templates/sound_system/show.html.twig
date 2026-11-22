@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la Collection{% endblock %}
+
+{% block main %}
+    <h1>Collection : {{ soundSystem.description }}</h1>
+    {% if soundSystem.member %}<p class="text-muted">Collection privée de {{ soundSystem.member }}</p>{% endif %}
+
+    <h2>Caissons de basse dans cette collection :</h2>
+    <ul>
+        {% for subwoofer in soundSystem.subwoofers %}
+            <li>
+                <a href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}">
+                    <strong>{{ subwoofer.model }}</strong>
+                </a> 
+                de {{ subwoofer.brand }} 
+                {% if subwoofer.year %} ({{ subwoofer.year }}) {% endif %}
+                {% for showcase in subwoofer.showcases %}
+                    <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" class="badge {{ showcase.published ? 'bg-success' : 'bg-warning text-dark' }} text-decoration-none">{{ showcase.title }}</a>
+                {% endfor %}
+                <a href="{{ path('app_subwoofer_edit', {'id': subwoofer.id}) }}" class="btn btn-sm btn-outline-primary ms-2">Modifier</a>
+            </li>
+        {% else %}
+            <li>Aucun caisson de basse pour le moment.</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ path('app_subwoofer_newinsoundsystem', {'id': soundSystem.id}) }}" class="btn btn-primary">Ajouter un caisson de basse</a></p>
+
+    <div class="d-flex gap-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_sound_system_list') }}" class="btn btn-secondary">Retour à la liste des collections</a>
+        {% else %}
+            <a href="{{ path('app_my_account') }}" class="btn btn-secondary">Retour à mon compte</a>
+        {% endif %}
+        <a href="{{ path('app_sound_system_edit', {'id': soundSystem.id}) }}" class="btn btn-primary">Modifier</a>
+        {{ include('sound_system/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

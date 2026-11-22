@@ -2,9 +2,17 @@ bootstrap_menu:
     menus:
         main:
             items:
+                home:
+                    label: 'Accueil'
+                    route: 'app_home'
+                showcases:
+                    label: 'Les vitrines'
+                    route: 'app_showcase_index'
+                    roles: [ 'ROLE_USER' ]
                 collections:
-                    label: 'Les Collections'
-                    route: 'app_inventory_list'
+                    label: 'Toutes les collections'
+                    route: 'app_sound_system_list'
+                    roles: [ 'ROLE_ADMIN' ]
         anonymousaccount:
             items:
                 login:
@@ -15,6 +23,10 @@ bootstrap_menu:
 #                   route: 'app_register'
         account:
             items:
+                myaccount:
+                    label: 'Mon compte'
+                    route: 'app_my_account'
+                    roles: [ 'ROLE_USER' ]
                 logout:
                     label: 'Logout'
                     route: 'app_logout'

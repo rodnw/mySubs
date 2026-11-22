@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle vitrine{% endblock %}
+
+{% block main %}
+    <h1>Créer une vitrine</h1>
+
+    {{ include('showcase/_form.html.twig', {'button_label': 'Créer'}) }}
+
+    <a href="{{ path('app_my_account') }}" class="btn btn-secondary mt-3">Retour à mon compte</a>
+{% endblock %}

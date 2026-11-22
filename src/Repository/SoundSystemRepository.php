@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Inventory;
+use App\Entity\SoundSystem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Inventory>
+ * @extends ServiceEntityRepository<SoundSystem>
  */
-class InventoryRepository extends ServiceEntityRepository
+class SoundSystemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Inventory::class);
+        parent::__construct($registry, SoundSystem::class);
     }
 
 //    /**
-//     * @return Inventory[] Returns an array of Inventory objects
+//     * @return SoundSystem[] Returns an array of SoundSystem objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -31,7 +31,7 @@ class InventoryRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Inventory
+//    public function findOneBySomeField($value): ?SoundSystem
 //    {
 //        return $this->createQueryBuilder('i')
 //            ->andWhere('i.exampleField = :val')

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Inventory;
+use App\Entity\SoundSystem;
 use App\Entity\Subwoofer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,9 +22,9 @@ class SubwooferType extends AbstractType
             ->add('imageName', TextType::class, ['disabled' => true, 'label' => "Nom de l'image"])
             ->add('imageFile', VichImageType::class, ['required' => false, 'label' => 'Image'])
         ;
-        if ($options['display_inventory']) {
-            $builder->add('inventory', EntityType::class, [
-                'class' => Inventory::class,
+        if ($options['display_sound_system']) {
+            $builder->add('soundSystem', EntityType::class, [
+                'class' => SoundSystem::class,
                 'choice_label' => 'description',
                 'label' => 'Collection',
             ]);
@@ -35,8 +35,8 @@ class SubwooferType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Subwoofer::class,
-            'display_inventory' => true,
+            'display_sound_system' => true,
         ]);
-        $resolver->setAllowedTypes('display_inventory', 'bool');
+        $resolver->setAllowedTypes('display_sound_system', 'bool');
     }
 }

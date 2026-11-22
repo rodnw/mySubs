@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,9 +33,28 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\Column(length: 100)]
+    private ?string $name = null;
+
+    #[ORM\OneToOne(inversedBy: 'member', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Inventory $inventory = null;
+    private ?SoundSystem $soundSystem = null;
+
+    /**
+     * @var Collection<int, Showcase>
+     */
+    #[ORM\OneToMany(targetEntity: Showcase::class, mappedBy: 'creator', orphanRemoval: true)]
+    private Collection $showcases;
+
+    public function __construct()
+    {
+        $this->showcases = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -116,14 +137,51 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         // @deprecated, to be removed when upgrading to Symfony 8
     }
 
-    public function getInventory(): ?Inventory
+    public function getSoundSystem(): ?SoundSystem
     {
-        return $this->inventory;
+        return $this->soundSystem;
     }
 
-    public function setInventory(Inventory $inventory): static
+    public function setSoundSystem(SoundSystem $soundSystem): static
     {
-        $this->inventory = $inventory;
+        $this->soundSystem = $soundSystem;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
+    {
+        return $this->showcases;
+    }
+
+    public function addShowcase(Showcase $showcase): static
+    {
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        $this->showcases->removeElement($showcase);
 
         return $this;
     }

@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\InventoryRepository;
+use App\Repository\SoundSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InventoryRepository::class)]
-#[ApiResource]
-class Inventory
+#[ORM\Entity(repositoryClass: SoundSystemRepository::class)]
+#[ApiResource(security: "is_granted('ROLE_ADMIN')", stateless: false)]
+class SoundSystem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,8 +24,12 @@ class Inventory
     /**
      * @var Collection<int, Subwoofer>
      */
-    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'inventory', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Subwoofer::class, mappedBy: 'soundSystem', cascade: ['persist'])]
     private Collection $subwoofers;
+
+    #[ORM\OneToOne(mappedBy: 'soundSystem')]
+    #[ApiProperty(readable: false, writable: false)]
+    private ?Member $member = null;
 
     public function __construct()
     {
@@ -65,7 +70,7 @@ class Inventory
     {
         if (!$this->subwoofers->contains($subwoofer)) {
             $this->subwoofers->add($subwoofer);
-            $subwoofer->setInventory($this);
+            $subwoofer->setSoundSystem($this);
         }
 
         return $this;
@@ -75,11 +80,16 @@ class Inventory
     {
         if ($this->subwoofers->removeElement($subwoofer)) {
             // set the owning side to null (unless already changed)
-            if ($subwoofer->getInventory() === $this) {
-                $subwoofer->setInventory(null);
+            if ($subwoofer->getSoundSystem() === $this) {
+                $subwoofer->setSoundSystem(null);
             }
         }
 
         return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
     }
 }

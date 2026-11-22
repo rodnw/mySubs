@@ -14,12 +14,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for inventory in inventories %}
+            {% for soundSystem in soundSystems %}
                 <tr>
-                    <td>{{ inventory.id }}</td>
-                    <td>{{ inventory.description }}</td>
+                    <td>{{ soundSystem.id }}</td>
+                    <td>{{ soundSystem.description }}</td>
                     <td>
-                        <a href="{{ path('app_inventory_show', {'id': inventory.id}) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ path('app_sound_system_show', {'id': soundSystem.id}) }}" class="btn btn-sm btn-primary">
                             Voir les caissons
                         </a>
                     </td>
@@ -28,7 +28,7 @@
         </tbody>
     </table>
 
-    <p><a href="{{ path('app_inventory_new') }}" class="btn btn-primary">Créer une collection</a></p>
+    <p><a href="{{ path('app_sound_system_new') }}" class="btn btn-primary">Créer une collection</a></p>
 
     <p><button id="subwoofersbtn">Cliquer ici pour charger la liste des caissons de basse</button></p>
 
