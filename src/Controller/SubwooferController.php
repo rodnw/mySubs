@@ -16,7 +16,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SubwooferController extends AbstractController
 {
-    // Create : GET affiche le formulaire, POST le traite puis redirige (303)
     #[Route('/subwoofer/new', name: 'app_subwoofer_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -62,7 +61,6 @@ class SubwooferController extends AbstractController
         ]);
     }
 
-    // Create dans le contexte d'une collection : la collection est connue grâce à l'id de la route
     #[Route('/subwoofer/newininventory/{id}', name: 'app_subwoofer_newininventory', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function newInInventory(Request $request, EntityManagerInterface $entityManager, Inventory $inventory): Response
     {
@@ -148,7 +146,6 @@ class SubwooferController extends AbstractController
                                       ['id' => $subwoofer->getId()]);
     }
 
-    // Update : même formulaire que la création, pré-rempli avec le caisson existant
     #[Route('/subwoofer/{id}/edit', name: 'app_subwoofer_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function edit(Request $request, Subwoofer $subwoofer, EntityManagerInterface $entityManager): Response
@@ -193,7 +190,6 @@ class SubwooferController extends AbstractController
         ]);
     }
 
-    // Delete : uniquement en POST, protégé par un jeton CSRF
     #[Route('/subwoofer/{id}', name: 'app_subwoofer_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Subwoofer $subwoofer, EntityManagerInterface $entityManager): Response

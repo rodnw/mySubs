@@ -14,7 +14,6 @@ class InventoryType extends AbstractType
     {
         $builder
             ->add('description', null, ['label' => 'Description'])
-            // Sous-formulaires des caissons de basse de la collection (association 1-N)
             ->add('subwoofers', CollectionType::class, [
                 'entry_type' => SubwooferType::class,
                 'entry_options' => [

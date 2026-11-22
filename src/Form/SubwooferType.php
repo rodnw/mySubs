@@ -15,7 +15,6 @@ class SubwooferType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Un champ de formulaire par attribut de l'entité Subwoofer
         $builder
             ->add('model', null, ['label' => 'Modèle'])
             ->add('brand', null, ['label' => 'Marque'])
@@ -23,9 +22,7 @@ class SubwooferType extends AbstractType
             ->add('imageName', TextType::class, ['disabled' => true, 'label' => "Nom de l'image"])
             ->add('imageFile', VichImageType::class, ['required' => false, 'label' => 'Image'])
         ;
-        // Le champ de la collection n'est affiché que si elle n'est pas déjà fixée
         if ($options['display_inventory']) {
-            // Relation ManyToOne : liste déroulante des inventaires existants
             $builder->add('inventory', EntityType::class, [
                 'class' => Inventory::class,
                 'choice_label' => 'description',

@@ -25,7 +25,6 @@ class InventoryController extends AbstractController
         ]);
     }
 
-    // Create : GET affiche le formulaire, POST le traite puis redirige (303)
     #[Route('/inventory/new', name: 'app_inventory_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -64,7 +63,6 @@ class InventoryController extends AbstractController
         ]);
     }
 
-    // Update : même formulaire que la création, pré-rempli avec la collection existante
     #[Route('/inventory/{id}/edit', name: 'app_inventory_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Inventory $inventory, EntityManagerInterface $entityManager): Response
     {
@@ -104,7 +102,6 @@ class InventoryController extends AbstractController
         ]);
     }
 
-    // Delete : uniquement en POST, protégé par un jeton CSRF
     #[Route('/inventory/{id}', name: 'app_inventory_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Inventory $inventory, EntityManagerInterface $entityManager): Response
     {

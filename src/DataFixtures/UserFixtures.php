@@ -34,7 +34,6 @@ class UserFixtures extends Fixture
             $roles[] = $role;
             $user->setRoles($roles);
 
-            // Un Member doit obligatoirement avoir une collection (JoinColumn nullable: false)
             $inventory = new Inventory();
             $inventory->setDescription('La collection de subs de ' . $email);
             $user->setInventory($inventory);
