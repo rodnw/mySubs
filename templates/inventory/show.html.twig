@@ -14,7 +14,9 @@
                 </a> 
                 de {{ subwoofer.brand }} 
                 {% if subwoofer.year %} ({{ subwoofer.year }}) {% endif %}
-                <a href="{{ path('app_subwoofer_edit', {'id': subwoofer.id}) }}" class="btn btn-sm btn-outline-primary ms-2">Modifier</a>
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_subwoofer_edit', {'id': subwoofer.id}) }}" class="btn btn-sm btn-outline-primary ms-2">Modifier</a>
+                {% endif %}
             </li>
         {% else %}
             <li>Aucun caisson de basse pour le moment.</li>
