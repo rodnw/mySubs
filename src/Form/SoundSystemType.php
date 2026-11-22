@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Inventory;
+use App\Entity\SoundSystem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InventoryType extends AbstractType
+class SoundSystemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,7 +18,7 @@ class InventoryType extends AbstractType
                 'entry_type' => SubwooferType::class,
                 'entry_options' => [
                     'label' => false,
-                    'display_inventory' => false,
+                    'display_sound_system' => false,
                 ],
                 'allow_add' => true,
                 'by_reference' => false,
@@ -30,7 +30,7 @@ class InventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Inventory::class,
+            'data_class' => SoundSystem::class,
         ]);
     }
 }

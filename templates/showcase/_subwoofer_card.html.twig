@@ -1,0 +1,23 @@
+{# Carte d'un caisson de basse dans une vitrine #}
+{% set bookmarks = app.session.get('bookmarks') ?? [] %}
+<div class="col mb-5">
+    <div class="card h-100 shadow-sm">
+        {% if subwoofer.imageName %}
+            <img class="card-img-top" src="{{ vich_uploader_asset(subwoofer, 'imageFile') }}" alt="{{ subwoofer }}" style="height: 200px; object-fit: cover;">
+        {% else %}
+            <div class="card-img-top bg-dark text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="bi bi-speaker" style="font-size: 4rem;"></i>
+            </div>
+        {% endif %}
+        <div class="card-body p-4 text-center">
+            <h5 class="fw-bolder">{{ subwoofer.model }}</h5>
+            {{ subwoofer.brand }}{% if subwoofer.year %} · {{ subwoofer.year }}{% endif %}
+        </div>
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('app_subwoofer_show', {'id': subwoofer.id}) }}">Voir la fiche</a>
+            <a class="btn btn-outline-secondary mt-auto" href="{{ path('app_subwoofer_mark', {'id': subwoofer.id}) }}" title="Marque-page">
+                <i class="bi {{ subwoofer.id in bookmarks ? 'bi-bookmark-fill' : 'bi-bookmark' }}"></i>
+            </a>
+        </div>
+    </div>
+</div>

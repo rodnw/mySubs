@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SubwooferRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: SubwooferRepository::class)]
-#[ApiResource]
+#[ApiResource(security: "is_granted('ROLE_ADMIN')", stateless: false)]
 #[Vich\Uploadable]
 class Subwoofer
 {
@@ -29,7 +32,7 @@ class Subwoofer
 
     #[ORM\ManyToOne(inversedBy: 'subwoofers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Inventory $inventory = null;
+    private ?SoundSystem $soundSystem = null;
 
     #[Vich\UploadableField(mapping: 'subwoofers', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
@@ -42,6 +45,23 @@ class Subwoofer
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Showcase>
+     */
+    #[ORM\ManyToMany(targetEntity: Showcase::class, mappedBy: 'subwoofers')]
+    #[ApiProperty(readable: false, writable: false)]
+    private Collection $showcases;
+
+    public function __construct()
+    {
+        $this->showcases = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->brand . ' ' . $this->model;
+    }
 
     public function getId(): ?int
     {
@@ -84,14 +104,14 @@ class Subwoofer
         return $this;
     }
 
-    public function getInventory(): ?Inventory
+    public function getSoundSystem(): ?SoundSystem
     {
-        return $this->inventory;
+        return $this->soundSystem;
     }
 
-    public function setInventory(?Inventory $inventory): static
+    public function setSoundSystem(?SoundSystem $soundSystem): static
     {
-        $this->inventory = $inventory;
+        $this->soundSystem = $soundSystem;
 
         return $this;
     }
@@ -139,5 +159,32 @@ class Subwoofer
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
+    {
+        return $this->showcases;
+    }
+
+    public function addShowcase(Showcase $showcase): static
+    {
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->addSubwoofer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        if ($this->showcases->removeElement($showcase)) {
+            $showcase->removeSubwoofer($this);
+        }
+
+        return $this;
     }
 }

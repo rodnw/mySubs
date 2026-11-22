@@ -1,0 +1,15 @@
+{# Removed: extends 'base.html.twig' #}
+{% extends 'sound_system/sound_system_form_base.html.twig' %}
+
+{% block title %}Modifier {{ soundSystem }}{% endblock %}
+
+{% block main %}
+    <h1>Modifier la collection</h1>
+
+    {{ include('sound_system/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <div class="d-flex gap-2 mt-3">
+        <a href="{{ path('app_sound_system_show', {'id': soundSystem.id}) }}" class="btn btn-secondary">Retour à la collection</a>
+        {{ include('sound_system/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

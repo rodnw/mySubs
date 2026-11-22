@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau caisson de basse{% endblock %}
+
+{% block main %}
+    <h1>Ajouter un caisson de basse à la collection « {{ soundSystem }} »</h1>
+
+    {{ include('subwoofer/_form.html.twig') }}
+
+    <a href="{{ path('app_sound_system_show', {'id': soundSystem.id}) }}" class="btn btn-secondary mt-3">Retour à la collection</a>
+{% endblock %}

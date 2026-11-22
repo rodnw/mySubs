@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les vitrines de la communauté{% endblock %}
+
+{% block main %}
+    <h1>Les vitrines de la communauté</h1>
+    <p class="lead">Les caissons de basse que les membres ont choisi de montrer.</p>
+
+    <div class="row gx-4 row-cols-1 row-cols-md-2 row-cols-xl-3 mt-4">
+        {% for showcase in showcases %}
+            <div class="col mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ showcase.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">par {{ showcase.creator }}</h6>
+                        <p class="card-text">{{ showcase.description }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary">{{ showcase.subwoofers|length }} caisson(s)</span>
+                        <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" class="btn btn-sm btn-dark">Visiter</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucune vitrine publiée pour le moment.</p>
+        {% endfor %}
+    </div>
+
+    <p><a href="{{ path('app_showcase_new') }}" class="btn btn-primary">Créer une vitrine</a></p>
+{% endblock %}

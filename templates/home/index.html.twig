@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MySubwoofers{% endblock %}
+
+{% block main %}
+    <header class="bg-dark py-5 rounded">
+        <div class="container px-4 px-lg-5 my-4">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">MySubwoofers</h1>
+                <p class="lead fw-normal text-white-50 mb-0">La communauté des passionnés de caissons de basse</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h2>Objectifs du site</h2>
+            <p>MySubwoofers permet aux membres de l'association de gérer en ligne leur collection de caissons de basse et de partager une partie de ce parc avec les autres passionnés.</p>
+
+            <h2>Fonctionnement</h2>
+            <ul>
+                <li>Chaque membre dispose d'une collection personnelle et privée, accessible depuis son tableau de bord « Mon compte ».</li>
+                <li>Il compose des vitrines avec les caissons de son choix, puis les publie lorsqu'elles sont prêtes.</li>
+                <li>Les membres connectés visitent les vitrines publiées et gardent des marque-pages sur les caissons qui les intéressent.</li>
+            </ul>
+
+            {% if not app.user %}
+                <p><a href="{{ path('app_login') }}" class="btn btn-primary">Se connecter</a></p>
+            {% else %}
+                <p><a href="{{ path('app_my_account') }}" class="btn btn-primary">Mon compte</a></p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h2>Actualités</h2>
+            <ul class="list-group mb-3">
+                {% for showcase in latest_showcases %}
+                    <li class="list-group-item">
+                        Nouvelle vitrine : <strong>{{ showcase.title }}</strong> par {{ showcase.creator }}
+                        {% if app.user %}
+                            <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}">voir</a>
+                        {% endif %}
+                    </li>
+                {% else %}
+                    <li class="list-group-item">Aucune vitrine publiée pour le moment.</li>
+                {% endfor %}
+            </ul>
+
+            <h2>Contact</h2>
+            <p>Une question, une demande d'adhésion ? <a href="mailto:{{ contact_email }}">Écrire à l'administrateur</a>.</p>
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Inventory;
+use App\Entity\SoundSystem;
 use App\Entity\Member;
 
 class UserFixtures extends Fixture
@@ -24,21 +24,22 @@ class UserFixtures extends Fixture
 
     private function loadUsers(ObjectManager $manager)
     {
-        foreach ($this->getUserData() as [$email,$plainPassword,$role]) {
+        foreach ($this->getUserData() as [$email,$plainPassword,$role,$name]) {
             $user = new Member();
             $password = $this->hasher->hashPassword($user, $plainPassword);
             $user->setEmail($email);
+            $user->setName($name);
             $user->setPassword($password);
 
             $roles = array();
             $roles[] = $role;
             $user->setRoles($roles);
 
-            $inventory = new Inventory();
-            $inventory->setDescription('La collection de subs de ' . $email);
-            $user->setInventory($inventory);
+            $soundSystem = new SoundSystem();
+            $soundSystem->setDescription('La collection de subs de ' . $name);
+            $user->setSoundSystem($soundSystem);
 
-            $manager->persist($inventory);
+            $manager->persist($soundSystem);
             $manager->persist($user);
         }
         $manager->flush();
@@ -48,12 +49,14 @@ class UserFixtures extends Fixture
         yield [
             'chris@localhost',
             'chris',
-            'ROLE_USER'
+            'ROLE_USER',
+            'Chris'
         ];
         yield [
             'anna@localhost',
             'anna',
-            'ROLE_ADMIN'
+            'ROLE_ADMIN',
+            'Anna'
         ];
     }
 }

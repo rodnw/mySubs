@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ showcase.title }}{% endblock %}
+
+{% block main %}
+    <header class="bg-dark py-5 mb-5 rounded">
+        <div class="container px-4 px-lg-5 my-3">
+            <div class="text-center text-white">
+                <h1 class="display-5 fw-bolder">{{ showcase.title }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Vitrine de {{ showcase.creator }}</p>
+                {% if not showcase.published %}
+                    <span class="badge bg-warning text-dark mt-2">Privée : en préparation</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% if showcase.description %}
+        <p class="lead text-center">{{ showcase.description }}</p>
+    {% endif %}
+
+    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center mt-4">
+        {% for subwoofer in showcase.subwoofers %}
+            {{ include('showcase/_subwoofer_card.html.twig') }}
+        {% else %}
+            <p class="text-center">Cette vitrine est encore vide.</p>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_showcase_index') }}" class="btn btn-secondary">Toutes les vitrines</a>
+        {% if can_manage %}
+            <a href="{{ path('app_showcase_edit', {'id': showcase.id}) }}" class="btn btn-primary">Modifier</a>
+            {{ include('showcase/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
+{% endblock %}

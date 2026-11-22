@@ -5,14 +5,13 @@
 {% block main %}
     <h1>Détail du caisson de basse</h1>
 
-    {% set urgents = app.session.get('urgents') %}
-    {% dump urgents %}
+    {% set bookmarks = app.session.get('bookmarks') ?? [] %}
 
-    <a href="{{ path('app_subwoofer_mark' , {'id': subwoofer.id}) }}">
-    {% if subwoofer.id in urgents %}
-    URGENT
+    <a href="{{ path('app_subwoofer_mark' , {'id': subwoofer.id}) }}" class="btn btn-sm btn-outline-secondary">
+    {% if subwoofer.id in bookmarks %}
+        <i class="bi bi-bookmark-fill"></i> Retirer des marque-pages
     {% else %}
-    NOT URGENT
+        <i class="bi bi-bookmark"></i> Ajouter aux marque-pages
     {% endif %}
     </a>
 
@@ -44,29 +43,57 @@
         <div class="form-group row mb-2">
             <label class="col-sm-2 col-form-label fw-bold">Image</label>
             <div class="col-sm-10">
-                <img src="{{ vich_uploader_asset(subwoofer, 'imageFile') }}" class="img-fluid" style="max-height: 300px">
+                {% if subwoofer.imageName %}
+                    <img src="{{ vich_uploader_asset(subwoofer, 'imageFile') }}" class="img-fluid" style="max-height: 300px">
+                {% else %}
+                    <div class="form-control form-control-plaintext">Pas d'image</div>
+                {% endif %}
             </div>
         </div>
 
-        {% if subwoofer.inventory %}
+        {% if can_manage %}
             <div class="form-group row mb-2">
                 <label class="col-sm-2 col-form-label fw-bold">Collection</label>
                 <div class="col-sm-10">
                     <div class="form-control form-control-plaintext">
-                        <a href="{{ path('app_inventory_show', {'id': subwoofer.inventory.id}) }}">{{ subwoofer.inventory }}</a>
+                        <a href="{{ path('app_sound_system_show', {'id': subwoofer.soundSystem.id}) }}">{{ subwoofer.soundSystem }}</a>
                     </div>
                 </div>
             </div>
+        {% elseif subwoofer.soundSystem.member %}
+            <div class="form-group row mb-2">
+                <label class="col-sm-2 col-form-label fw-bold">Propriétaire</label>
+                <div class="col-sm-10">
+                    <div class="form-control form-control-plaintext">{{ subwoofer.soundSystem.member }}</div>
+                </div>
+            </div>
         {% endif %}
+
+        <div class="form-group row mb-2">
+            <label class="col-sm-2 col-form-label fw-bold">Vitrines</label>
+            <div class="col-sm-10">
+                <div class="form-control form-control-plaintext">
+                    {% for showcase in subwoofer.showcases|filter(s => s.published or can_manage) %}
+                        {% if not loop.first %}, {% endif %}<a href="{{ path('app_showcase_show', {'id': showcase.id}) }}">{{ showcase.title }}</a>{% if not showcase.published %} (privée){% endif %}
+                    {% else %}
+                        Dans aucune vitrine
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="d-flex gap-2">
-        <a href="{{ path('app_inventory_show', { 'id': subwoofer.inventory.id }) }}" class="btn btn-secondary">
-            Retour à la collection
-        </a>
-        <a href="{{ path('app_subwoofer_edit', { 'id': subwoofer.id }) }}" class="btn btn-primary">
-            Modifier
-        </a>
-        {{ include('subwoofer/_delete_form.html.twig') }}
+        {% if can_manage %}
+            <a href="{{ path('app_sound_system_show', { 'id': subwoofer.soundSystem.id }) }}" class="btn btn-secondary">
+                Retour à la collection
+            </a>
+            <a href="{{ path('app_subwoofer_edit', { 'id': subwoofer.id }) }}" class="btn btn-primary">
+                Modifier
+            </a>
+            {{ include('subwoofer/_delete_form.html.twig') }}
+        {% else %}
+            <a href="{{ path('app_showcase_index') }}" class="btn btn-secondary">Retour aux vitrines</a>
+        {% endif %}
     </div>
 {% endblock %}

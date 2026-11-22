@@ -1,0 +1,6 @@
+{% if is_granted('ROLE_ADMIN') %}
+<form method="post" action="{{ path('app_sound_system_delete', {'id': soundSystem.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette collection ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ soundSystem.id) }}">
+    <button class="btn btn-danger">Supprimer</button>
+</form>
+{% endif %}
