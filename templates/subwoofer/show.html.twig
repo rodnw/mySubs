@@ -5,6 +5,17 @@
 {% block main %}
     <h1>Détail du caisson de basse</h1>
 
+    {% set urgents = app.session.get('urgents') %}
+    {% dump urgents %}
+
+    <a href="{{ path('app_subwoofer_mark' , {'id': subwoofer.id}) }}">
+    {% if subwoofer.id in urgents %}
+    URGENT
+    {% else %}
+    NOT URGENT
+    {% endif %}
+    </a>
+
     <div class="form-horizontal mt-4">
         <div class="form-group row mb-2">
             <label class="col-sm-2 col-form-label fw-bold">Modèle</label>
