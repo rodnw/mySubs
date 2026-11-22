@@ -115,6 +115,7 @@ class SubwooferController extends AbstractController
     }
 
     #[Route('/subwoofer/{id}', name: 'app_subwoofer_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function show(int $id, SubwooferRepository $subwooferRepository): Response
     {
         $subwoofer = $subwooferRepository->find($id);
